@@ -8,6 +8,8 @@ cp .env.example .env
 docker exec -it tibi_app php artisan key:generate
 docker exec -it tibi_app php artisan migrate:fresh
 docker exec -it tibi_app php artisan db:seed (if you want to get random 5 todo items)
+docker exec -it tibi_app npm install
+docker exec -it tibi_app npm run build
 ```
 
 App on: http://localhost:4256/
