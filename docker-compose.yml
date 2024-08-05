@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./tibi
+      dockerfile: Dockerfile
+    container_name: tibi_app
+    working_dir: /var/www
+    volumes:
+      - ./tibi:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - tibi
+
+  webserver:
+    image: nginx:latest
+    container_name: tibi_nginx
+    ports:
+      - "4256:80"
+    volumes:
+      - ./tibi:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - tibi
+
+  db:
+    image: mysql:8.0
+    container_name: tibi_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: tibi
+      MYSQL_DATABASE: tibi
+      MYSQL_USER: tibi
+      MYSQL_PASSWORD: tibi
+    ports:
+      - "4257:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - tibi
+
+volumes:
+  dbdata:
+
+networks:
+  tibi:
+    driver: bridge
