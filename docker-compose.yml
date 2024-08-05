@@ -41,6 +41,19 @@ services:
     networks:
       - tibi
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: tibi_phpmyadmin
+    environment:
+      PMA_HOST: tibi_mysql
+      MYSQL_ROOT_PASSWORD: tibi
+    ports:
+      - "4258:80"
+    depends_on:
+      - db
+    networks:
+      - tibi
+
 volumes:
   dbdata:
 
